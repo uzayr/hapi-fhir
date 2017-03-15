@@ -14,10 +14,10 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>hapi-fhir-jpaserver-example</artifactId>
+	<artifactId>hapi-fhir-jpaserver</artifactId>
 	<packaging>war</packaging>
 
-	<name>HAPI FHIR JPA Server - Example</name>
+	<name>HAPI FHIR JPA Server</name>
 
 	<repositories>
 		<repository>
@@ -119,7 +119,11 @@
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.41</version>
+		</dependency>
 		<!-- The following dependencies are only needed for automated unit tests, you do not neccesarily need them to run the example. -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -177,7 +181,7 @@
 	<build>
 
 		<!-- Tells Maven to name the generated WAR file as hapi-fhir-jpaserver-example.war -->
-		<finalName>hapi-fhir-jpaserver-example</finalName>
+		<finalName>hapi-fhir-jpaserver</finalName>
 
 		<!-- The following is not required for the application to build, but allows you to test it by issuing "mvn jetty:run" from the command line. -->
 		<pluginManagement>
@@ -187,7 +191,7 @@
 					<artifactId>jetty-maven-plugin</artifactId>
 					<configuration>
 						<webApp>
-							<contextPath>/hapi-fhir-jpaserver-example</contextPath>
+							<contextPath>/hapi-fhir-jpaserver</contextPath>
 							<allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
 						</webApp>
 					</configuration>

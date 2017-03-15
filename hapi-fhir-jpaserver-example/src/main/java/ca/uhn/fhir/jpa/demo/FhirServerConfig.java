@@ -1,9 +1,10 @@
 package ca.uhn.fhir.jpa.demo;
 
 import java.util.Properties;
-
 import javax.persistence.EntityManagerFactory;
+
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.time.DateUtils;
@@ -51,10 +52,24 @@ public class FhirServerConfig extends BaseJavaConfigDstu2 {
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		BasicDataSource retVal = new BasicDataSource();
+		/*
 		retVal.setDriver(new org.apache.derby.jdbc.EmbeddedDriver());
 		retVal.setUrl("jdbc:derby:directory:target/jpaserver_derby_files;create=true");
-		retVal.setUsername("");
-		retVal.setPassword("");
+		*/
+		try {
+			retVal.setDriver(new com.mysql.jdbc.Driver());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
+		retVal.setUrl("jdbc:mysql://localhost:3306/hapifhir");
+		//retVal.setUrl("jdbc:mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/hapisql");
+		
+		
+		retVal.setUsername("test");
+		retVal.setPassword("test");
+		
 		return retVal;
 	}
 
@@ -71,7 +86,7 @@ public class FhirServerConfig extends BaseJavaConfigDstu2 {
 
 	private Properties jpaProperties() {
 		Properties extraProperties = new Properties();
-		extraProperties.put("hibernate.dialect", org.hibernate.dialect.DerbyTenSevenDialect.class.getName());
+		extraProperties.put("hibernate.dialect", org.hibernate.dialect.MySQL5Dialect.class.getName());
 		extraProperties.put("hibernate.format_sql", "true");
 		extraProperties.put("hibernate.show_sql", "false");
 		extraProperties.put("hibernate.hbm2ddl.auto", "update");
