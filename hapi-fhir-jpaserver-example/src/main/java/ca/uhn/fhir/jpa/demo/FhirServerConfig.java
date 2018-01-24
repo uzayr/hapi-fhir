@@ -24,6 +24,7 @@ import ca.uhn.fhir.jpa.util.SubscriptionsRequireManualActivationInterceptorDstu2
 import ca.uhn.fhir.rest.server.interceptor.IServerInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
+import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
 
 @Configuration
 @EnableTransactionManagement()
@@ -67,8 +68,8 @@ public class FhirServerConfig extends BaseJavaConfigDstu2 {
 		//retVal.setUrl("jdbc:mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/hapisql");
 		
 		
-		retVal.setUsername("test");
-		retVal.setPassword("test");
+		retVal.setUsername("root");
+		retVal.setPassword("password");
 		
 		return retVal;
 	}
@@ -133,6 +134,14 @@ public class FhirServerConfig extends BaseJavaConfigDstu2 {
 	public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager retVal = new JpaTransactionManager();
 		retVal.setEntityManagerFactory(entityManagerFactory);
+		return retVal;
+	}
+
+    @Bean(autowire = Autowire.BY_TYPE)
+	public DatabaseBackedPagingProvider databaseBackedPagingProvider() {
+		DatabaseBackedPagingProvider retVal = super.databaseBackedPagingProvider();
+		retVal.setDefaultPageSize(20);
+		retVal.setMaximumPageSize(5000);
 		return retVal;
 	}
 
